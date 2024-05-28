@@ -33,13 +33,13 @@ func main() {
 func calculate(input string) (string, error) {
 	parts := strings.Fields(input)
 	if len(parts) != 3 {
-		return "", fmt.Errorf("неправильный формат операции")
+		panic("неправильный формат операции")
 	}
 	op1, op2, operator := parts[0], parts[2], parts[1]
 
 	isRomanNumeral := isRoman(op1) // Проверяем, является ли первое число римским
 	if isRomanNumeral != isRoman(op2) {
-		return "", fmt.Errorf("используются разные системы счисления")
+		panic("используются разные системы счисления")
 	}
 	var num1, num2 int
 	if isRomanNumeral {
@@ -49,16 +49,16 @@ func calculate(input string) (string, error) {
 		var err error
 		num1, err = strconv.Atoi(op1)
 		if err != nil {
-			return "", fmt.Errorf("неправильное число: %s", op1)
+			panic("неправильное число: " + op1)
 		}
 		num2, err = strconv.Atoi(op2)
 		if err != nil {
-			return "", fmt.Errorf("неправильное число: %s", op2)
+			panic("неправильное число: " + op2)
 		}
 	}
 
 	if num1 < 1 || num1 > 10 || num2 < 1 || num2 > 10 {
-		return "", fmt.Errorf("числа должны быть в диапазоне от 1 до 10")
+		panic("числа должны быть в диапазоне от 1 до 10")
 	}
 
 	var result int
@@ -72,12 +72,12 @@ func calculate(input string) (string, error) {
 	case "/":
 		result = num1 / num2
 	default:
-		return "", fmt.Errorf("неподдерживаемый оператор: %s", operator)
+		panic("неподдерживаемый оператор: " + operator)
 	}
 
 	if isRomanNumeral {
 		if result < 1 {
-			return "", fmt.Errorf("в римских числах нет нуля или отрицательных чисел")
+			panic("в римских числах нет нуля или отрицательных чисел")
 		}
 		return toRoman(result), nil
 	}
